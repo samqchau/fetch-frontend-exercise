@@ -1,5 +1,6 @@
 .registrationForm {
   height: 593px;
+  min-height: 593px;
 }
 
 .check {

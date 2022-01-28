@@ -27,7 +27,7 @@ const RegistrationSuccess = ({ returnHome }: PropTypes): JSX.Element => {
         </div>
         <button
           onClick={returnHome}
-          className="bg-gradient-to-br from-black to-black hover:to-indigo-900 text-white py-2 rounded-md h-10 w-full"
+          className="bg-gradient-to-br from-black to-black hover:to-indigo-900 text-white hover:text-yellow-200 py-2 rounded-md h-10 w-full"
         >
           Return Home
         </button>

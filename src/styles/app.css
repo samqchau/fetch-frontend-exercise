@@ -1,0 +1,7 @@
+html {
+  background: black;
+}
+
+#root {
+  background: linear-gradient(to bottom right, black, rgb(22, 0, 78));
+}
