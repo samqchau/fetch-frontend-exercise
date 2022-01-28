@@ -6,8 +6,22 @@ import InputErrorMessage from './InputErrorMessage'
 const url = 'https://frontend-take-home.fetchrewards.com/form'
 
 interface IState {
+  value: string
+  label: string
   name: string
-  abbreviation: string
+}
+
+interface IOccupation {
+  value: string
+  label: string
+}
+
+interface IUserFormData {
+  name: string
+  email: string
+  password: string
+  occupation: string
+  state: string
 }
 
 const UserRegistrationForm = (): JSX.Element => {
@@ -17,14 +31,17 @@ const UserRegistrationForm = (): JSX.Element => {
   const [emailError, setEmailError] = useState('')
   const [password, setPassword] = useState('')
   const [passwordError, setPasswordError] = useState('')
-  const [occupation, setOccupation] = useState<SingleValue<string>>('')
+  const [occupation, setOccupation] = useState<SingleValue<IOccupation>>(null)
   const [occupationError, setOccupationError] = useState('')
   const [state, setState] = useState<SingleValue<IState> | null>(null)
   const [stateError, setStateError] = useState('')
 
-  const [formOccupations, setFormOccupations] = useState<string[]>([])
+  const [formOccupations, setFormOccupations] = useState<IOccupation[]>([])
   const [formStates, setFormStates] = useState<IState[]>([])
   const [formGetError, setFormGetError] = useState('')
+
+  const [postSuccess, setPostSuccess] = useState('')
+  const [postError, setPostError] = useState('')
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setName(e.target.value)
@@ -40,7 +57,7 @@ const UserRegistrationForm = (): JSX.Element => {
     setPassword(e.target.value)
   }
 
-  const handleOccupationChange = (newValue: SingleValue<string>): void => {
+  const handleOccupationChange = (newValue: SingleValue<IOccupation>): void => {
     setOccupation(newValue)
   }
 
@@ -56,24 +73,54 @@ const UserRegistrationForm = (): JSX.Element => {
     setStateError('')
   }
 
+  const postFormData = async (
+    url: string,
+    userFormData: IUserFormData
+  ): Promise<void> => {
+    const res = await axios.post(url, userFormData)
+    if (res.status === 200) {
+      setPostSuccess('Thank you for registering')
+    } else {
+      setPostError('There was an error on our end. Please try again.')
+    }
+  }
+
   const handleSubmit = (e: React.SyntheticEvent): void => {
     handleResetErrors()
     e.preventDefault()
-    if (name.length < 1) setNameError('Name is a required field')
-    if (email.length < 1) setEmailError('Email is a required field')
-    if (password.length < 8)
+    let err = false
+    if (name.length < 1) {
+      setNameError('Name is a required field')
+      err = true
+    }
+    if (email.length < 1) {
+      setEmailError('Email is a required field')
+      err = true
+    }
+    if (password.length < 8) {
       setPasswordError('Password must longer than 8 chars')
-    if (!occupation) setOccupationError('Occupation is a required field')
-    if (!state) setStateError('State is a required field')
+      err = true
+    }
+    if (!occupation) {
+      setOccupationError('Occupation is a required field')
+      err = true
+    }
+    if (!state) {
+      setStateError('State is a required field')
+      err = true
+    }
+    if (err) return
+
+    const formData = {
+      name,
+      email,
+      password,
+      occupation: occupation ? occupation.value : '',
+      state: state ? state.value : '',
+    }
+
+    postFormData('https://frontend-take-home.fetchrewards.com/form', formData)
   }
-
-  useEffect(() => {
-    console.log(state)
-  }, [state])
-
-  useEffect(() => {
-    console.log(occupation)
-  }, [occupation])
 
   useEffect(() => {
     async function fetchFormData(url: string): Promise<void> {
@@ -101,13 +148,13 @@ const UserRegistrationForm = (): JSX.Element => {
     <div className="h-full w-full min-h-fit py-10 flex flex-col items-center">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col align-middle p-10 h-auto w-96 max-w-md bg-blue-300 rounded-md"
+        className="flex flex-col align-middle p-10 h-auto w-96 max-w-md rounded-md bg-blue-100"
       >
         <div className="pl-1">
           <h2 className="font-medium text-xl">Sign Up</h2>
           <p className="text-gray-700">It&apos;s quick and easy.</p>
         </div>
-        <hr className="my-3 divide-yellow-600" />
+        <hr className="my-3 border-gray-400" />
         {formGetError && <div>{formGetError}</div>}
         <label htmlFor="name" className="font-semibold">
           Full name{' '}
