@@ -1,9 +1,9 @@
 import React from 'react'
-import UserRegistrationForm from './components/UserRegistrationForm'
+import UserRegistrationForm from './components/RegistrationForm'
 
 function App(): JSX.Element {
   return (
-    <div className="h-screen bg-gradient-to-br from-black to-indigo-900">
+    <div className="h-screen">
       <UserRegistrationForm />
     </div>
   )

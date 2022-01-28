@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import Select, { SingleValue } from 'react-select'
+import RegistrationFormPlaceholder from '../placeholders/RegistrationFormPlaceholder'
 import InputErrorMessage from './InputErrorMessage'
-import Loader from '../components/Loader'
-import RegistrationSuccess from '../components/RegistrationSuccess'
+import Loader from './Loader'
+import RegistrationSuccess from './RegistrationSuccess'
 import { IUserData } from '../interfaces/userTypes'
 import { ISelectFields } from '../interfaces/componentTypes'
 import UserFormAPI, { IUserFormAPIPostParams } from '../apis/UserFormAPI'
@@ -147,7 +148,7 @@ const UserRegistrationForm = (): JSX.Element => {
         className="flex flex-col align-middle px-10 pt-10 pb-4 w-96 max-w-md min-h-fit rounded-md bg-purple-100
         registrationForm"
       >
-        {postStatusCode !== 200 && (
+        {postStatusCode !== 200 && !gettingData && (
           <>
             <div className="pl-1">
               <h2 className="font-medium text-xl">Sign Up</h2>
@@ -226,6 +227,7 @@ const UserRegistrationForm = (): JSX.Element => {
         {postStatusCode === 200 && (
           <RegistrationSuccess returnHome={returnHome} />
         )}
+        {gettingData && <RegistrationFormPlaceholder error={getDataError} />}
       </form>
     </div>
   )
