@@ -60,7 +60,15 @@ const UserRegistrationForm = (): JSX.Element => {
     setState(newValue)
   }
 
-  const handleResetErrors = (): void => {
+  const resetFormData = (): void => {
+    setName('')
+    setEmail('')
+    setPassword('')
+    setOccupation(null)
+    setState(null)
+  }
+
+  const resetErrorMessages = (): void => {
     setNameError('')
     setEmailError('')
     setPasswordError('')
@@ -68,8 +76,13 @@ const UserRegistrationForm = (): JSX.Element => {
     setStateError('')
   }
 
+  const returnHome = (): void => {
+    resetFormData()
+    resetStatusCode()
+  }
+
   const handleSubmit = (e: React.SyntheticEvent): void => {
-    handleResetErrors()
+    resetErrorMessages()
     e.preventDefault()
     let err = false
     if (name.length < 1) {
@@ -132,7 +145,7 @@ const UserRegistrationForm = (): JSX.Element => {
       <form
         onSubmit={handleSubmit}
         className="flex flex-col align-middle px-10 pt-10 pb-4 w-96 max-w-md min-h-fit rounded-md bg-blue-200
-        registrationForm overflow-hidden"
+        registrationForm"
       >
         {postStatusCode !== 200 && (
           <>
@@ -181,7 +194,7 @@ const UserRegistrationForm = (): JSX.Element => {
               options={dropDownOccupations}
               value={occupation}
               onChange={handleOccupationChange}
-              onFocus={handleResetErrors}
+              onFocus={resetErrorMessages}
               placeholder={'Select Occupation...'}
               className="rounded-sm leading-7"
             />
@@ -193,7 +206,7 @@ const UserRegistrationForm = (): JSX.Element => {
               options={dropDownStates}
               value={state}
               onChange={handleStateChange}
-              onFocus={handleResetErrors}
+              onFocus={resetErrorMessages}
               placeholder={'Select State...'}
               className="rounded-sm leading-7"
             />
@@ -211,7 +224,7 @@ const UserRegistrationForm = (): JSX.Element => {
           </>
         )}
         {postStatusCode === 200 && (
-          <RegistrationSuccess returnHome={resetStatusCode} />
+          <RegistrationSuccess returnHome={returnHome} />
         )}
       </form>
     </div>
