@@ -1,28 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import Select, { SingleValue } from 'react-select'
-import axios from 'axios'
 import InputErrorMessage from './InputErrorMessage'
+import { ISelectFields, IUserData } from '../interfaces/userTypes'
+
+import UserFormAPI, { IPostUserFormParams } from '../apis/UserFormAPI'
 
 const url = 'https://frontend-take-home.fetchrewards.com/form'
-
-interface IState {
-  value: string
-  label: string
-  name: string
-}
-
-interface IOccupation {
-  value: string
-  label: string
-}
-
-interface IUserFormData {
-  name: string
-  email: string
-  password: string
-  occupation: string
-  state: string
-}
 
 const UserRegistrationForm = (): JSX.Element => {
   const [name, setName] = useState('')
@@ -31,17 +14,21 @@ const UserRegistrationForm = (): JSX.Element => {
   const [emailError, setEmailError] = useState('')
   const [password, setPassword] = useState('')
   const [passwordError, setPasswordError] = useState('')
-  const [occupation, setOccupation] = useState<SingleValue<IOccupation>>(null)
+  const [occupation, setOccupation] = useState<SingleValue<ISelectFields>>(null)
   const [occupationError, setOccupationError] = useState('')
-  const [state, setState] = useState<SingleValue<IState> | null>(null)
+  const [state, setState] = useState<SingleValue<ISelectFields> | null>(null)
   const [stateError, setStateError] = useState('')
 
-  const [formOccupations, setFormOccupations] = useState<IOccupation[]>([])
-  const [formStates, setFormStates] = useState<IState[]>([])
-  const [formGetError, setFormGetError] = useState('')
+  const [formOccupations, setFormOccupations] = useState<ISelectFields[]>([])
+  const [formStates, setFormStates] = useState<ISelectFields[]>([])
 
-  const [postSuccess, setPostSuccess] = useState('')
-  const [postError, setPostError] = useState('')
+  const [postConfig, setPostConfig] = useState<IPostUserFormParams | null>(null)
+
+  const { statesAndOccupations, gettingData, getDataError } =
+    UserFormAPI.Get(url)
+
+  const { postStatusCode, postingData, postDataError } =
+    UserFormAPI.Post(postConfig)
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setName(e.target.value)
@@ -57,11 +44,13 @@ const UserRegistrationForm = (): JSX.Element => {
     setPassword(e.target.value)
   }
 
-  const handleOccupationChange = (newValue: SingleValue<IOccupation>): void => {
+  const handleOccupationChange = (
+    newValue: SingleValue<ISelectFields>
+  ): void => {
     setOccupation(newValue)
   }
 
-  const handleStateChange = (newValue: SingleValue<IState>): void => {
+  const handleStateChange = (newValue: SingleValue<ISelectFields>): void => {
     setState(newValue)
   }
 
@@ -71,18 +60,6 @@ const UserRegistrationForm = (): JSX.Element => {
     setPasswordError('')
     setOccupationError('')
     setStateError('')
-  }
-
-  const postFormData = async (
-    url: string,
-    userFormData: IUserFormData
-  ): Promise<void> => {
-    const res = await axios.post(url, userFormData)
-    if (res.status === 200) {
-      setPostSuccess('Thank you for registering')
-    } else {
-      setPostError('There was an error on our end. Please try again.')
-    }
   }
 
   const handleSubmit = (e: React.SyntheticEvent): void => {
@@ -111,7 +88,7 @@ const UserRegistrationForm = (): JSX.Element => {
     }
     if (err) return
 
-    const formData = {
+    const formData: IUserData = {
       name,
       email,
       password,
@@ -119,30 +96,30 @@ const UserRegistrationForm = (): JSX.Element => {
       state: state ? state.value : '',
     }
 
-    postFormData('https://frontend-take-home.fetchrewards.com/form', formData)
+    const config: IPostUserFormParams = {
+      url: 'https://frontend-take-home.fetchrewards.com/form',
+      data: formData,
+      method: 'POST',
+    }
+
+    setPostConfig(config)
   }
 
   useEffect(() => {
-    async function fetchFormData(url: string): Promise<void> {
-      try {
-        const { data } = await axios.get(url)
-        setFormOccupations(
-          data.occupations.map((occupation: string) => {
-            return { value: occupation, label: occupation }
-          })
-        )
-        setFormStates(
-          data.states.map((state: IState) => {
-            return { value: state?.name, label: state?.name }
-          })
-        )
-      } catch (error) {
-        setFormGetError('There was an error fetching the form data.')
-      }
-    }
+    if (statesAndOccupations) {
+      setFormOccupations(
+        statesAndOccupations.occupations.map((occupation: string) => {
+          return { value: occupation, label: occupation }
+        })
+      )
 
-    fetchFormData(url)
-  }, [])
+      setFormStates(
+        statesAndOccupations.states.map((state) => {
+          return { value: state.name, label: state.name }
+        })
+      )
+    }
+  }, [statesAndOccupations])
 
   return (
     <div className="h-full w-full min-h-fit py-10 flex flex-col items-center">
@@ -155,7 +132,6 @@ const UserRegistrationForm = (): JSX.Element => {
           <p className="text-gray-700">It&apos;s quick and easy.</p>
         </div>
         <hr className="my-3 border-gray-400" />
-        {formGetError && <div>{formGetError}</div>}
         <label htmlFor="name" className="font-semibold">
           Full name{' '}
         </label>
