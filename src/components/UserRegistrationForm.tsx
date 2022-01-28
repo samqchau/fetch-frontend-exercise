@@ -130,7 +130,7 @@ const UserRegistrationForm = (): JSX.Element => {
     <div className="h-full w-full min-h-fit py-10 flex flex-col items-center">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col align-middle px-10 pt-10 pb-4 h-auto w-96 max-w-md rounded-md bg-blue-100"
+        className="flex flex-col align-middle px-10 pt-10 pb-4 w-96 max-w-md min-h-fit h-[593px] rounded-md bg-blue-100"
       >
         <div className="pl-1">
           <h2 className="font-medium text-xl">Sign Up</h2>

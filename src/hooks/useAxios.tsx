@@ -35,21 +35,8 @@ const useAxios = (params: IAxiosParams | null): IAxiosReturn => {
         }
       } catch (err: unknown) {
         if (err instanceof Error) {
-          setTimeout(
-            (err) => {
-              setError(err.message)
-            },
-            1000,
-            err
-          )
-        } else if (typeof err === 'string')
-          setTimeout(
-            (err) => {
-              setError(err)
-            },
-            1000,
-            err
-          )
+          setError(err.message)
+        } else if (typeof err === 'string') setError(err)
       } finally {
         setLoading(false)
       }
