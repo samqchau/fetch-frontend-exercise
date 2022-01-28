@@ -95,7 +95,7 @@ const UserRegistrationForm = (): JSX.Element => {
       err = true
     }
     if (password.length < 8) {
-      setPasswordError('Password must longer than 8 chars')
+      setPasswordError('Password must be longer than 8 chars')
       err = true
     }
     if (!occupation) {
@@ -159,6 +159,7 @@ const UserRegistrationForm = (): JSX.Element => {
               Full name{' '}
             </label>
             <input
+              id="name"
               type="text"
               name="name"
               value={name}
@@ -170,6 +171,7 @@ const UserRegistrationForm = (): JSX.Element => {
               Email{' '}
             </label>
             <input
+              id="email"
               type="email"
               name="email"
               value={email}
@@ -181,6 +183,7 @@ const UserRegistrationForm = (): JSX.Element => {
               Password{' '}
             </label>
             <input
+              id="password"
               type="password"
               name="password"
               value={password}
@@ -198,6 +201,8 @@ const UserRegistrationForm = (): JSX.Element => {
               onFocus={resetErrorMessages}
               placeholder={'Select Occupation...'}
               className="rounded-sm leading-7"
+              name="occupations"
+              id="occupations"
             />
             <InputErrorMessage errorMessage={occupationError} />
             <label htmlFor="state" className="font-semibold">
@@ -210,6 +215,8 @@ const UserRegistrationForm = (): JSX.Element => {
               onFocus={resetErrorMessages}
               placeholder={'Select State...'}
               className="rounded-sm leading-7"
+              name="states"
+              id="states"
             />
             <InputErrorMessage errorMessage={stateError} />
             {!postingData && (

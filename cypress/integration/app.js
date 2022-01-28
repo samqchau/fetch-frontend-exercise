@@ -1,0 +1,30 @@
+/// <reference types="cypress" />
+
+const { click } = require("@testing-library/user-event/dist/click")
+
+describe('The form...', () => {
+  it('Works as intended', () => {
+    cy.visit('/')
+    cy.wait(1000)
+    cy.get('#name').type('Elon Musk')
+    cy.contains(/Register/).click()
+    cy.contains(/Email is a required field/).should('be.visible')
+    cy.contains(/Password must be longer than 8 chars/).should('be.visible')
+    cy.contains(/Occupation is a required field/).should('be.visible')
+    cy.contains(/State is a required field/).should('be.visible')
+    cy.get('#email').type('TeslaCEO@tesla.com')
+    cy.get('#password').type('3l3ctricCahhs')
+    cy.contains(/Register/).click()
+    cy.contains(/Occupation is a required field/).should('be.visible')
+    cy.get('#occupations').click()
+    cy.get('#react-select-6-option-0').click({force: true})
+    cy.get('#states').click()
+    cy.get('#react-select-7-option-0').click({force: true})
+    cy.contains(/Register/).click()
+    cy.get('.loader').should('be.visible')
+    cy.contains(/We sent an email to you/).should('be.visible')
+    cy.wait(3000)
+    cy.contains(/Return Home/).click()
+    cy.contains(/Sign Up/).should('be.visible')
+  })
+})
