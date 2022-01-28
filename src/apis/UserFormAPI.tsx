@@ -8,26 +8,26 @@ interface IStatesAndOccupations {
   occupations: string[]
 }
 
-interface IGetUserFormAPI {
+interface IUserFormApiGetRes {
   statesAndOccupations: IStatesAndOccupations | null
   gettingData: boolean
   getDataError: string
 }
 
-export interface IPostUserFormParams {
+export interface IUserFormAPIPostParams {
   url: string
   data?: IUserData
   method: Method
 }
 
-interface IPostUserFormAPI {
+interface IUserFormApiPostRes {
   postStatusCode: number | null
   postingData: boolean
   postDataError: string
 }
 
 const UserFormAPI = {
-  Get: (url: string): IGetUserFormAPI => {
+  Get: (url: string): IUserFormApiGetRes => {
     const [method] = useState<Method>('GET')
     const [config] = useState({ method, url })
     const [statesAndOccupations, setStatesAndOccupations] =
@@ -46,9 +46,9 @@ const UserFormAPI = {
 
     return { statesAndOccupations, gettingData, getDataError }
   },
-  Post: (params: IPostUserFormParams | null): IPostUserFormAPI => {
+  Post: (params: IUserFormAPIPostParams | null): IUserFormApiPostRes => {
     const [method] = useState<Method>('POST')
-    const [config, setConfig] = useState<IPostUserFormParams | null>(null)
+    const [config, setConfig] = useState<IUserFormAPIPostParams | null>(null)
     const [postStatusCode, setPostStatusCode] = useState<number | null>(null)
     const {
       response,

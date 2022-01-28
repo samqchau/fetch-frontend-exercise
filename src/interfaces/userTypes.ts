@@ -1,8 +1,3 @@
-export interface ISelectFields {
-  value: string
-  label: string
-}
-
 export interface IState {
   name: string
   abbreviation: string

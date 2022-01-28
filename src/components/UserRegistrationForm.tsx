@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import Select, { SingleValue } from 'react-select'
 import InputErrorMessage from './InputErrorMessage'
-import { ISelectFields, IUserData } from '../interfaces/userTypes'
+import { IUserData } from '../interfaces/userTypes'
+import { ISelectFields } from '../interfaces/componentTypes'
 
-import UserFormAPI, { IPostUserFormParams } from '../apis/UserFormAPI'
-
-const url = 'https://frontend-take-home.fetchrewards.com/form'
+import UserFormAPI, { IUserFormAPIPostParams } from '../apis/UserFormAPI'
 
 const UserRegistrationForm = (): JSX.Element => {
   const [name, setName] = useState('')
@@ -19,13 +18,18 @@ const UserRegistrationForm = (): JSX.Element => {
   const [state, setState] = useState<SingleValue<ISelectFields> | null>(null)
   const [stateError, setStateError] = useState('')
 
-  const [formOccupations, setFormOccupations] = useState<ISelectFields[]>([])
-  const [formStates, setFormStates] = useState<ISelectFields[]>([])
+  const [dropDownOccupations, setDropDownOccupations] = useState<
+    ISelectFields[]
+  >([])
+  const [dropDownStates, setDropDownStates] = useState<ISelectFields[]>([])
 
-  const [postConfig, setPostConfig] = useState<IPostUserFormParams | null>(null)
+  const [postConfig, setPostConfig] = useState<IUserFormAPIPostParams | null>(
+    null
+  )
 
-  const { statesAndOccupations, gettingData, getDataError } =
-    UserFormAPI.Get(url)
+  const { statesAndOccupations, gettingData, getDataError } = UserFormAPI.Get(
+    'https://frontend-take-home.fetchrewards.com/form'
+  )
 
   const { postStatusCode, postingData, postDataError } =
     UserFormAPI.Post(postConfig)
@@ -96,7 +100,7 @@ const UserRegistrationForm = (): JSX.Element => {
       state: state ? state.value : '',
     }
 
-    const config: IPostUserFormParams = {
+    const config: IUserFormAPIPostParams = {
       url: 'https://frontend-take-home.fetchrewards.com/form',
       data: formData,
       method: 'POST',
@@ -107,13 +111,13 @@ const UserRegistrationForm = (): JSX.Element => {
 
   useEffect(() => {
     if (statesAndOccupations) {
-      setFormOccupations(
+      setDropDownOccupations(
         statesAndOccupations.occupations.map((occupation: string) => {
           return { value: occupation, label: occupation }
         })
       )
 
-      setFormStates(
+      setDropDownStates(
         statesAndOccupations.states.map((state) => {
           return { value: state.name, label: state.name }
         })
@@ -169,7 +173,7 @@ const UserRegistrationForm = (): JSX.Element => {
           Occupation
         </label>
         <Select
-          options={formOccupations}
+          options={dropDownOccupations}
           value={occupation}
           onChange={handleOccupationChange}
           onFocus={handleResetErrors}
@@ -181,7 +185,7 @@ const UserRegistrationForm = (): JSX.Element => {
           State
         </label>
         <Select
-          options={formStates}
+          options={dropDownStates}
           value={state}
           onChange={handleStateChange}
           onFocus={handleResetErrors}
