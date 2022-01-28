@@ -1,0 +1,30 @@
+.loader {
+  animation-name: rotate;
+  animation-duration: 1.2s;
+  animation-iteration-count: infinite;
+  will-change: transform;
+  border-radius: 50%;
+  height: 36px;
+  width: 36px;
+  position: relative;
+}
+
+.loader::after {
+  content: ' ';
+  height: 30px;
+  width: 30px;
+  position: absolute;
+  background: rgb(219 234 254);
+  border-radius: 50%;
+  left: 3px;
+  top: 3px;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

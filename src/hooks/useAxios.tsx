@@ -14,7 +14,7 @@ interface IAxiosReturn {
 }
 
 const useAxios = (params: IAxiosParams | null): IAxiosReturn => {
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [response, setResponse] = useState<any>()
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Select, { SingleValue } from 'react-select'
 import InputErrorMessage from './InputErrorMessage'
+import Loader from '../components/Loader'
 import { IUserData } from '../interfaces/userTypes'
 import { ISelectFields } from '../interfaces/componentTypes'
 
@@ -129,7 +130,7 @@ const UserRegistrationForm = (): JSX.Element => {
     <div className="h-full w-full min-h-fit py-10 flex flex-col items-center">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col align-middle p-10 h-auto w-96 max-w-md rounded-md bg-blue-100"
+        className="flex flex-col align-middle px-10 pt-10 pb-4 h-auto w-96 max-w-md rounded-md bg-blue-100"
       >
         <div className="pl-1">
           <h2 className="font-medium text-xl">Sign Up</h2>
@@ -193,12 +194,16 @@ const UserRegistrationForm = (): JSX.Element => {
           className="rounded-sm leading-7"
         />
         <InputErrorMessage errorMessage={stateError} />
-        <button
-          type="submit"
-          className="bg-green-600 hover:bg-green-500 text-white py-2 mt-3 rounded-md"
-        >
-          Register
-        </button>
+        {!postingData && (
+          <button
+            type="submit"
+            className="bg-green-600 hover:bg-green-500 text-white py-2 rounded-md h-10"
+          >
+            Register
+          </button>
+        )}
+        {postingData && <Loader />}
+        <InputErrorMessage errorMessage={postDataError} />
       </form>
     </div>
   )
