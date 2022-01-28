@@ -80,7 +80,7 @@ const UserFormAPI = {
         }
         setConfig(pConfig)
       }
-    }, [params])
+    }, [params, method])
 
     useEffect(() => {
       if (loading) {

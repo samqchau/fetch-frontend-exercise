@@ -144,7 +144,7 @@ const UserRegistrationForm = (): JSX.Element => {
     <div className="h-full w-full min-h-fit py-10 flex flex-col items-center">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col align-middle px-10 pt-10 pb-4 w-96 max-w-md min-h-fit rounded-md bg-blue-200
+        className="flex flex-col align-middle px-10 pt-10 pb-4 w-96 max-w-md min-h-fit rounded-md bg-purple-100
         registrationForm"
       >
         {postStatusCode !== 200 && (
