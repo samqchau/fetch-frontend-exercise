@@ -2,7 +2,7 @@
 
 ## Overview
 
-This application was built using React, Tailwind CSS, and TypeScript. A few unit tests were written with React Testing Library with Jest as the test runner, and Cypress.io was used to perform a encompassing integration test. The application was deployed on Vercel. [https://fetch-frontend-exercise.vercel.app/](https://fetch-frontend-exercise.vercel.app/)
+This application was built using React, Tailwind CSS, and TypeScript. A few unit tests were written with React Testing Library with Jest as the test runner, and Cypress.io was used to perform a single integration test. The application was deployed on Vercel. [https://fetch-frontend-exercise.vercel.app/](https://fetch-frontend-exercise.vercel.app/)
 
 ## Prerequisites
 
