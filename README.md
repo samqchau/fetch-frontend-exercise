@@ -1,22 +1,11 @@
-# cra-template-tailwindcss-typescript
+# Fetch Rewards Frontend Take-Home Exercise
 
-A streamlined [Tailwind CSS](https://tailwindcss.com) template for [Create React App](https://github.com/facebook/create-react-app) in [TypeScript](https://www.typescriptlang.org/).
+## Objective
 
-> This template installs and sets up [Tailwind CSS](https://tailwindcss.com) with TypeScript support.
+## Overview
 
-## Usage
+This application was built using React, Tailwind CSS, and TypeScript.
 
-```bash
-npx create-react-app --template tailwindcss-typescript
-```
+## Afterthoughts
 
-## Credits
-
-This project was made possible thanks to the following projects.
-
-1. [GeoffSelby/cra-template-tailwindcss](https://github.com/GeoffSelby/cra-template-tailwindcss) - A streamlined Tailwind CSS template for Create React App (in JavaScript).
-2. [cra-template-typescript](https://github.com/facebook/create-react-app/tree/master/packages/cra-template-typescript) - An official TypeScript template for create-react-app.
-
-## License
-
-MIT © [Sung M. Kim](https://sung.codes)
+* Tailwind and react-select library style conflicts. If I had more time I would resolve this difference.
