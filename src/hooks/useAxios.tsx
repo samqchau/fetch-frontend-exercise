@@ -16,6 +16,7 @@ interface IAxiosReturn {
 const useAxios = (params: IAxiosParams | null): IAxiosReturn => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  /* eslint-disable  @typescript-eslint/no-explicit-any */
   const [response, setResponse] = useState<any>()
 
   useEffect(() => {
