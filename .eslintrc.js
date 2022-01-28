@@ -35,7 +35,10 @@ module.exports = {
         'react-hooks/rules-of-hooks': 'error',
         'react-hooks/exhaustive-deps': 'warn',
         "react/react-in-jsx-scope": "off",
-        "no-unused-vars": ["warn", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }]
+        "no-unused-vars": ["warn", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
+        "prettier/prettier": ["error", {
+            "endOfLine":"auto"
+        }],
     },
     globals: {
         JSX: true,
