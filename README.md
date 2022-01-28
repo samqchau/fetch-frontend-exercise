@@ -66,6 +66,16 @@ npm run cypress:dev
 
 This command will run the Cypress integration tests. Please wait a moment for the dev server to boot up before running the Cypress test. It should only take half a minute.
 
+### ESLint & Prettier
+
+```npm
+
+npm run format
+
+```
+
+ESLint & Prettier will format code
+
 ## Afterthoughts
 
 * Some form of CI/CD probably through GitHub Actions
@@ -75,3 +85,4 @@ This command will run the Cypress integration tests. Please wait a moment for th
 * Stronger client-side form validation
 * Password visibility toggle
 * Tailwind and react-select library style conflicts. If I had more time I would resolve this difference.
+* ESLint & Prettier should be ran on another machine or another process rather than on blocking dev time
