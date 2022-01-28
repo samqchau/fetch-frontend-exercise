@@ -24,6 +24,7 @@ interface IUserFormApiPostRes {
   postStatusCode: number | null
   postingData: boolean
   postDataError: string
+  resetStatusCode: { (): void }
 }
 
 const UserFormAPI = {
@@ -54,9 +55,19 @@ const UserFormAPI = {
     const [postDataError, setPostDataError] = useState('')
     const { response, loading, error } = useAxios(config)
 
+    const resetStatusCode = (): void => {
+      setPostStatusCode(null)
+    }
+
     useEffect(() => {
       if (response) {
-        setPostStatusCode(response.status)
+        setTimeout(
+          (status) => {
+            setPostStatusCode(status)
+          },
+          1000,
+          response.status
+        )
       }
     }, [response])
 
@@ -92,7 +103,7 @@ const UserFormAPI = {
       }
     }, [error])
 
-    return { postStatusCode, postingData, postDataError }
+    return { postStatusCode, postingData, postDataError, resetStatusCode }
   },
 }
 

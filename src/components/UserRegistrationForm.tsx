@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react'
 import Select, { SingleValue } from 'react-select'
 import InputErrorMessage from './InputErrorMessage'
 import Loader from '../components/Loader'
+import RegistrationSuccess from '../components/RegistrationSuccess'
 import { IUserData } from '../interfaces/userTypes'
 import { ISelectFields } from '../interfaces/componentTypes'
-
 import UserFormAPI, { IUserFormAPIPostParams } from '../apis/UserFormAPI'
+import '../styles/registrationForm.css'
 
 const UserRegistrationForm = (): JSX.Element => {
   const [name, setName] = useState('')
@@ -32,7 +33,7 @@ const UserRegistrationForm = (): JSX.Element => {
     'https://frontend-take-home.fetchrewards.com/form'
   )
 
-  const { postStatusCode, postingData, postDataError } =
+  const { postStatusCode, postingData, postDataError, resetStatusCode } =
     UserFormAPI.Post(postConfig)
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -130,80 +131,88 @@ const UserRegistrationForm = (): JSX.Element => {
     <div className="h-full w-full min-h-fit py-10 flex flex-col items-center">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col align-middle px-10 pt-10 pb-4 w-96 max-w-md min-h-fit h-[593px] rounded-md bg-blue-100"
+        className="flex flex-col align-middle px-10 pt-10 pb-4 w-96 max-w-md min-h-fit rounded-md bg-blue-200
+        registrationForm overflow-hidden"
       >
-        <div className="pl-1">
-          <h2 className="font-medium text-xl">Sign Up</h2>
-          <p className="text-gray-700">It&apos;s quick and easy.</p>
-        </div>
-        <hr className="my-3 border-gray-400" />
-        <label htmlFor="name" className="font-semibold">
-          Full name{' '}
-        </label>
-        <input
-          type="text"
-          name="name"
-          value={name}
-          onChange={handleNameChange}
-          className="pl-2 rounded-sm leading-9"
-        />
-        <InputErrorMessage errorMessage={nameError} />
-        <label htmlFor="email" className="font-semibold">
-          Email{' '}
-        </label>
-        <input
-          type="email"
-          name="email"
-          value={email}
-          onChange={handleEmailChange}
-          className="pl-2 rounded-sm leading-9"
-        />
-        <InputErrorMessage errorMessage={emailError} />
-        <label htmlFor="password" className="font-semibold">
-          Password{' '}
-        </label>
-        <input
-          type="password"
-          name="password"
-          value={password}
-          onChange={handlePasswordChange}
-          className="pl-2 rounded-sm leading-9"
-        />
-        <InputErrorMessage errorMessage={passwordError} />
-        <label htmlFor="occupation" className="font-semibold">
-          Occupation
-        </label>
-        <Select
-          options={dropDownOccupations}
-          value={occupation}
-          onChange={handleOccupationChange}
-          onFocus={handleResetErrors}
-          placeholder={'Select Occupation...'}
-          className="rounded-sm leading-7"
-        />
-        <InputErrorMessage errorMessage={occupationError} />
-        <label htmlFor="state" className="font-semibold">
-          State
-        </label>
-        <Select
-          options={dropDownStates}
-          value={state}
-          onChange={handleStateChange}
-          onFocus={handleResetErrors}
-          placeholder={'Select State...'}
-          className="rounded-sm leading-7"
-        />
-        <InputErrorMessage errorMessage={stateError} />
-        {!postingData && (
-          <button
-            type="submit"
-            className="bg-green-600 hover:bg-green-500 text-white py-2 rounded-md h-10"
-          >
-            Register
-          </button>
+        {postStatusCode !== 200 && (
+          <>
+            <div className="pl-1">
+              <h2 className="font-medium text-xl">Sign Up</h2>
+              <p className="text-gray-700">It&apos;s quick and easy.</p>
+            </div>
+            <hr className="my-3 border-gray-400" />
+            <label htmlFor="name" className="font-semibold">
+              Full name{' '}
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={name}
+              onChange={handleNameChange}
+              className="pl-2 rounded-sm leading-9"
+            />
+            <InputErrorMessage errorMessage={nameError} />
+            <label htmlFor="email" className="font-semibold">
+              Email{' '}
+            </label>
+            <input
+              type="email"
+              name="email"
+              value={email}
+              onChange={handleEmailChange}
+              className="pl-2 rounded-sm leading-9"
+            />
+            <InputErrorMessage errorMessage={emailError} />
+            <label htmlFor="password" className="font-semibold">
+              Password{' '}
+            </label>
+            <input
+              type="password"
+              name="password"
+              value={password}
+              onChange={handlePasswordChange}
+              className="pl-2 rounded-sm leading-9"
+            />
+            <InputErrorMessage errorMessage={passwordError} />
+            <label htmlFor="occupation" className="font-semibold">
+              Occupation
+            </label>
+            <Select
+              options={dropDownOccupations}
+              value={occupation}
+              onChange={handleOccupationChange}
+              onFocus={handleResetErrors}
+              placeholder={'Select Occupation...'}
+              className="rounded-sm leading-7"
+            />
+            <InputErrorMessage errorMessage={occupationError} />
+            <label htmlFor="state" className="font-semibold">
+              State
+            </label>
+            <Select
+              options={dropDownStates}
+              value={state}
+              onChange={handleStateChange}
+              onFocus={handleResetErrors}
+              placeholder={'Select State...'}
+              className="rounded-sm leading-7"
+            />
+            <InputErrorMessage errorMessage={stateError} />
+            {!postingData && (
+              <button
+                type="submit"
+                className="bg-green-600 hover:bg-green-500 text-white py-2 rounded-md h-10"
+              >
+                Register
+              </button>
+            )}
+            {postingData && <Loader />}
+            <InputErrorMessage errorMessage={postDataError} />
+          </>
         )}
-        {postingData && <Loader />}
-        <InputErrorMessage errorMessage={postDataError} />
+        {postStatusCode === 200 && (
+          <RegistrationSuccess returnHome={resetStatusCode} />
+        )}
       </form>
     </div>
   )
