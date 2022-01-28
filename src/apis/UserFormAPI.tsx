@@ -50,11 +50,8 @@ const UserFormAPI = {
     const [method] = useState<Method>('POST')
     const [config, setConfig] = useState<IUserFormAPIPostParams | null>(null)
     const [postStatusCode, setPostStatusCode] = useState<number | null>(null)
-    const {
-      response,
-      loading: postingData,
-      error: postDataError,
-    } = useAxios(config)
+    const [postingData, setPostingData] = useState(false)
+    const { response, loading, error: postDataError } = useAxios(config)
 
     useEffect(() => {
       if (response) {
@@ -72,6 +69,16 @@ const UserFormAPI = {
         setConfig(pConfig)
       }
     }, [params])
+
+    useEffect(() => {
+      if (loading) {
+        setPostingData(true)
+      } else {
+        setTimeout(() => {
+          setPostingData(false)
+        }, 1000)
+      }
+    }, [loading])
 
     return { postStatusCode, postingData, postDataError }
   },
