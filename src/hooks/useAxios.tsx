@@ -21,18 +21,35 @@ const useAxios = (params: IAxiosParams | null): IAxiosReturn => {
   useEffect(() => {
     async function sendRequest(params: IAxiosParams): Promise<void> {
       setLoading(true)
+      setError('')
       try {
         const { url, method, data } = params
         if (data) {
           const res = await axios.request({ url, method, data })
-          setResponse(res)
+          if (res) setResponse(res)
+          else throw new Error('There was an error, please try again.')
         } else {
           const res = await axios.request({ url, method })
-          setResponse(res)
+          if (res) setResponse(res)
+          else throw new Error('There was an error, please try again.')
         }
       } catch (err: unknown) {
-        if (err instanceof Error) setError(err.message)
-        else if (typeof err === 'string') setError(err)
+        if (err instanceof Error) {
+          setTimeout(
+            (err) => {
+              setError(err.message)
+            },
+            1000,
+            err
+          )
+        } else if (typeof err === 'string')
+          setTimeout(
+            (err) => {
+              setError(err)
+            },
+            1000,
+            err
+          )
       } finally {
         setLoading(false)
       }

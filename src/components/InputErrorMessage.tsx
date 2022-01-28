@@ -3,7 +3,11 @@ interface PropTypes {
 }
 
 const InputErrorMessage = ({ errorMessage }: PropTypes): JSX.Element => {
-  return <p className="font-thin h-2.5 text-xs mb-2">{errorMessage}</p>
+  return (
+    <p className="h-2.5 font-extralight text-xs mb-2 text-red-700">
+      {errorMessage}
+    </p>
+  )
 }
 
 export default InputErrorMessage
